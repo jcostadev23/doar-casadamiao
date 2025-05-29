@@ -17,3 +17,22 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@layer utilities {
+  @keyframes heartbeat {
+    60%,
+    80% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.035);
+    }
+    70% {
+      transform: scale(1.095);
+    }
+  }
+
+  .animate-heartbeat {
+    animation: heartbeat 2s ease-in-out infinite;
+  }
+}
