@@ -33,9 +33,6 @@ export default function RootLayout({
             {children}
           </main>
         </div>
-        <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-          <div>Footer</div>
-        </footer>
       </body>
     </html>
   );
