@@ -1,19 +1,23 @@
-import clientPromise from "@/lib/mongodb";
+import { MongoClient } from "mongodb";
 import { NextRequest, NextResponse } from "next/server";
+
+const uri = process.env.MONGODB_URI as string;
+
+const client = await new MongoClient(uri).connect();
+const db = client.db("mongodb");
+const collection = db.collection("doar-casadamiao");
 
 export async function POST(req: NextRequest) {
   const event = await req.json();
 
   if (event.data.object.custom_fields.length) {
     try {
-      const client = await clientPromise;
-      const db = client.db("mongodb");
-      const collection = db.collection("doar-casadamiao");
-
       const result = await collection.insertOne({
         heart_name: event.data.object.custom_fields[0].text.value,
         date: new Date(),
       });
+
+      await client.close();
 
       return NextResponse.json({ status: "Success", value: result.insertedId });
     } catch (error) {
@@ -24,16 +28,21 @@ export async function POST(req: NextRequest) {
 }
 
 export async function GET() {
-  try {
-    const client = await clientPromise;
-    const db = client.db("mongodb");
-    const collection = db.collection("doar-casadamiao");
+  if (!uri) {
+    return NextResponse.json(
+      { status: "Failed", value: "MONGODB_URI não definida" },
+      { status: 500 }
+    );
+  }
 
+  try {
     const names = await collection.find().toArray();
+
+    await client.close();
 
     return NextResponse.json(
       { status: "Success", value: names },
-      { status: 200, headers: { "Cache-Control": "no-store" } }
+      { status: 200 }
     );
   } catch (error) {
     return NextResponse.json(
