@@ -1,5 +1,3 @@
-"use client";
-
 import HeartThanks from "@/components/HeartContainer";
 import LinkDoar from "@/components/LinkDoar";
 
