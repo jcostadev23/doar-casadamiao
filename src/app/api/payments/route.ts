@@ -28,10 +28,6 @@ export async function POST(req: NextRequest) {
 }
 
 export async function GET() {
-  if (!process.env.MONGODB_URI) {
-    console.log("MONGODB_URI is undefined");
-    throw new Error("MONGODB_URI is not defined!");
-  }
   const uri = process.env.MONGODB_URI as string;
 
   const client = await new MongoClient(uri).connect();
