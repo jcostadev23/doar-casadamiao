@@ -29,6 +29,7 @@ export async function POST(req: NextRequest) {
 
 export async function GET() {
   const uri = process.env.MONGODB_URI as string;
+  return NextResponse.json({ status: "Success", value: uri });
 
   const client = await new MongoClient(uri).connect();
   const db = client.db("mongodb");
