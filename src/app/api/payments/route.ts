@@ -2,7 +2,7 @@ import { MongoClient } from "mongodb";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  const uri = process.env.NEXT_PUBLIC_MONGODB_URI as string;
+  const uri = process.env.MONGODB_URI as string;
 
   const client = await new MongoClient(uri).connect();
   const db = client.db("mongodb");
@@ -28,7 +28,11 @@ export async function POST(req: NextRequest) {
 }
 
 export async function GET() {
-  const uri = process.env.NEXT_PUBLIC_MONGODB_URI as string;
+  if (!process.env.MONGODB_URI) {
+    console.log("MONGODB_URI is undefined");
+    throw new Error("MONGODB_URI is not defined!");
+  }
+  const uri = process.env.MONGODB_URI as string;
 
   const client = await new MongoClient(uri).connect();
   const db = client.db("mongodb");
