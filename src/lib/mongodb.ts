@@ -17,6 +17,8 @@ export async function getHeartNames() {
   const collection = db.collection("doar-casadamiao");
   try {
     const result = await collection.find().sort({ date: -1 }).toArray();
+    await client.close();
+
     return result;
   } catch {
     return [];

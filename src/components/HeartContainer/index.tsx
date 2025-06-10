@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import HeartHug from "@/components/HeartBeat";
 import HeartNames from "../HeartNames";
 
