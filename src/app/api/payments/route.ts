@@ -1,13 +1,13 @@
 import { MongoClient } from "mongodb";
 import { NextRequest, NextResponse } from "next/server";
 
-const uri = process.env.MONGODB_URI as string;
-
-const client = await new MongoClient(uri).connect();
-const db = client.db("mongodb");
-const collection = db.collection("doar-casadamiao");
-
 export async function POST(req: NextRequest) {
+  const uri = process.env.MONGODB_URI as string;
+
+  const client = await new MongoClient(uri).connect();
+  const db = client.db("mongodb");
+  const collection = db.collection("doar-casadamiao");
+
   const event = await req.json();
 
   if (event.data.object.custom_fields.length) {
@@ -25,29 +25,4 @@ export async function POST(req: NextRequest) {
     }
   }
   return NextResponse.json({ status: 500 });
-}
-
-export async function GET() {
-  if (!uri) {
-    return NextResponse.json(
-      { status: "Failed", value: "MONGODB_URI não definida" },
-      { status: 500 }
-    );
-  }
-
-  try {
-    const names = await collection.find().toArray();
-
-    await client.close();
-
-    return NextResponse.json(
-      { status: "Success", value: names },
-      { status: 200 }
-    );
-  } catch (error) {
-    return NextResponse.json(
-      { status: "Failed", value: String(error) },
-      { status: 500 }
-    );
-  }
 }
