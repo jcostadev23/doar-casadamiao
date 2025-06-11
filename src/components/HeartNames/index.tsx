@@ -24,6 +24,8 @@ const HeartNames = () => {
         return false;
       }
 
+      console.log("teste", resp);
+
       setHeartNames(resp.value);
     })();
   }, []);
