@@ -1,10 +1,10 @@
 import Image from "next/image";
-import heartHub from "../../../public/heart-hug.png";
+import heartHug from "../../../public/heart-hug.png";
 
 const HeartHug = () => {
   return (
     <Image
-      src={heartHub}
+      src={heartHug}
       width={360}
       height={350}
       alt="Coração com as maos a abraçar "

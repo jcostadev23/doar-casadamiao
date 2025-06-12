@@ -1,17 +1,16 @@
-import { MongoClient } from "mongodb";
-
 export const getHeartNames = async () => {
-  const uri = process.env.MONGODB_URI as string;
-
-  const client = await new MongoClient(uri).connect();
-  const db = client.db("mongodb");
-  const collection = db.collection("doar-casadamiao");
-
+  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
   try {
-    const result = await collection.find().sort({ date: -1 }).toArray();
-    await client.close();
+    const response = await fetch(`${BASE_URL}/api/payments`, {
+      cache: "no-store",
+    });
 
-    return result;
+    if (!response) {
+      throw new Error(`Error on the fetch`);
+    }
+
+    const data = await response.json();
+    return data.value;
   } catch (error) {
     throw new Error(`Error on the fetch, ${error}`);
   }

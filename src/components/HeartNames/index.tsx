@@ -1,15 +1,38 @@
 "use client";
 
+import { getHeartNames } from "@/utils/apiCall";
 import { useEffect, useState } from "react";
+import Loading from "../Loader";
 
-type Props = {
-  heartNames: Array<{ heart_name: string }>;
+type HeartName = {
+  _id: string;
+  date: string;
+  heart_name: string;
 };
 
-const HeartNames: React.FC<Props> = ({ heartNames }) => {
+const HeartNames = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [heartNames, setHeartNames] = useState<Array<HeartName>>([]);
 
   useEffect(() => {
+    (async () => {
+      setIsLoading(true);
+      const names = await getHeartNames();
+
+      if (!names) {
+        return false;
+      }
+
+      setHeartNames(names);
+      setIsLoading(false);
+    })();
+  }, []);
+
+  useEffect(() => {
+    if (!heartNames || heartNames.length === 0) {
+      return;
+    }
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % heartNames.length);
     }, 3000);
@@ -18,9 +41,7 @@ const HeartNames: React.FC<Props> = ({ heartNames }) => {
   }, [heartNames]);
 
   return (
-    <div className="absolute top-[40%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white font-bold text-3xl">
-      {heartNames[currentIndex]?.heart_name}
-    </div>
+    <div>{isLoading ? <Loading /> : heartNames[currentIndex]?.heart_name}</div>
   );
 };
 
