@@ -1,23 +1,31 @@
-import HeartHug from "@/components/HeartBeat";
+"use client";
+
+import HeartThanks from "@/components/HeartContainer";
+import Loading from "@/components/Loader";
 import { getHeartNames } from "@/utils/apiCall";
-import { use } from "react";
+import { useEffect, useState } from "react";
 
 const Checkout = () => {
-  const heartNames = use(getHeartNames());
+  const [isLoading, setIsLoading] = useState(false);
+  const [heartName, setHeartName] = useState("");
+
+  useEffect(() => {
+    (async () => {
+      setIsLoading(true);
+      const names = await getHeartNames();
+
+      if (!names) {
+        return false;
+      }
+
+      setHeartName(names[0]?.heart_name);
+      setIsLoading(false);
+    })();
+  }, []);
 
   return (
     <div className="flex flex-col md:flex-row items-center justify-center">
-      <div className="relative w-[600px] h-[400px]">
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-          <HeartHug />
-        </div>
-        <div className="absolute top-30 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white font-bold text-xl">
-          Obrigado
-        </div>
-        <div className="absolute top-[40%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white font-bold text-3xl">
-          {heartNames[0]?.heart_name}
-        </div>
-      </div>
+      <HeartThanks element={isLoading ? <Loading /> : heartName} />
       <h1 className="text-2xl font-bold md:text-4xl">
         Obrigado pela sua doação
       </h1>
