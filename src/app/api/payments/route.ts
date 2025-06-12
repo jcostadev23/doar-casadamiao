@@ -26,3 +26,20 @@ export async function POST(req: NextRequest) {
   }
   return NextResponse.json({ status: 500 });
 }
+
+export async function GET() {
+  const uri = process.env.MONGODB_URI as string;
+
+  const client = await new MongoClient(uri).connect();
+  const db = client.db("mongodb");
+  const collection = db.collection("doar-casadamiao");
+
+  try {
+    const result = await collection.find().sort({ date: -1 }).toArray();
+    await client.close();
+
+    return NextResponse.json({ status: "Success", value: result });
+  } catch (error) {
+    return NextResponse.json({ status: "Failed", value: error });
+  }
+}
