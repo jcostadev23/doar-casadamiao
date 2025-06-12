@@ -9,7 +9,7 @@ const Nav = () => {
           <CasaDamiaoImage />
         </div>
       </Link>
-      <div className="flex flex-col md:flex-row  gap-4">
+      <div className="flex flex-col md:flex-row  gap-1 md:gap-4">
         <a href={"https://www.casadamiao.pt/"} target="_blank">
           <span className="hover:opacity-60">CASADAMIÃO.PT</span>
         </a>
